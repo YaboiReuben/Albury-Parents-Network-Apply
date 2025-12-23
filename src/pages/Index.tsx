@@ -1,13 +1,25 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { WelcomeScreen } from "@/components/WelcomeScreen";
+import { ApplicationForm } from "@/components/ApplicationForm";
+import { SuccessScreen } from "@/components/SuccessScreen";
+
+type AppState = "welcome" | "form" | "success";
 
 const Index = () => {
+  const [appState, setAppState] = useState<AppState>("welcome");
+
+  const handleStart = () => setAppState("form");
+  const handleSuccess = () => setAppState("success");
+  const handleBack = () => setAppState("welcome");
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <>
+      {appState === "welcome" && <WelcomeScreen onStart={handleStart} />}
+      {appState === "form" && (
+        <ApplicationForm onSuccess={handleSuccess} onBack={handleBack} />
+      )}
+      {appState === "success" && <SuccessScreen />}
+    </>
   );
 };
 
